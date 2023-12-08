@@ -38,9 +38,33 @@ const factsList = document.querySelector('.facts-list');
 
 factsList.innerHTML = '';
 
-// factsList.insertAdjacentHTML('afterbegin', '<li>Obaida</li>');
+loadFacts(initialFacts);
+async function loadFacts() {
+	const res = await fetch('https://ougrbaifurlmoteofyof.supabase.co/rest/v1/facts', {
+		headers: {
+			apikey:
+				'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91Z3JiYWlmdXJsbW90ZW9meW9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDE4OTQ3NDksImV4cCI6MjAxNzQ3MDc0OX0.LO5w68qRST6O50pIKaTsDonHzIqnfBAv6pj2osVClm8',
+			authorization:
+				'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im91Z3JiYWlmdXJsbW90ZW9meW9mIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDE4OTQ3NDksImV4cCI6MjAxNzQ3MDc0OX0.LO5w68qRST6O50pIKaTsDonHzIqnfBAv6pj2osVClm8',
+		},
+	});
+	const data = await res.json();
+	createFactList(data);
+}
 
-const htmlArray = initialFacts.map();
+function createFactList(data) {
+	const htmlArr = data.map(
+		(fact) => `
+		<li class="fact">
+		<p>${fact.text}
+		<a href="${fact.source}" class="source" target="_blank">(Source)</a>
+		</p>
+		<span class="tag" style="background-color: #3b82f6;">${fact.category}</span>
+		</li>`
+	);
+	const html = htmlArr.join('');
+	factsList.insertAdjacentHTML('afterbegin', html);
+}
 
 btn.addEventListener('click', () => {
 	form.classList.toggle('hidden');
@@ -48,8 +72,6 @@ btn.addEventListener('click', () => {
 		? (btn.textContent = 'share a fact')
 		: (btn.textContent = 'close');
 });
-
-console.dir(btn);
 
 // const CATEGORIES = [
 // 	{ name: 'technology', color: '#3b82f6' },
