@@ -32,6 +32,17 @@ const initialFacts = [
 	},
 ];
 
+const CATEGORIES = [
+	{ name: 'technology', color: '#3b82f6' },
+	{ name: 'science', color: '#16a34a' },
+	{ name: 'finance', color: '#ef4444' },
+	{ name: 'society', color: '#eab308' },
+	{ name: 'entertainment', color: '#db2777' },
+	{ name: 'health', color: '#14b8a6' },
+	{ name: 'history', color: '#f97316' },
+	{ name: 'news', color: '#8b5cf6' },
+];
+
 const btn = document.querySelector('.btn-open');
 const form = document.querySelector('.fact-form');
 const factsList = document.querySelector('.facts-list');
@@ -49,6 +60,9 @@ async function loadFacts() {
 		},
 	});
 	const data = await res.json();
+	console.log(data);
+	// const filteredData = data.filter((fact) => fact.category === 'society');
+
 	createFactList(data);
 }
 
@@ -59,7 +73,9 @@ function createFactList(data) {
 		<p>${fact.text}
 		<a href="${fact.source}" class="source" target="_blank">(Source)</a>
 		</p>
-		<span class="tag" style="background-color: #3b82f6;">${fact.category}</span>
+		<span class="tag" style="background-color: ${
+			CATEGORIES.find((cat) => cat.name === fact.category).color
+		};">${fact.category}</span>
 		</li>`
 	);
 	const html = htmlArr.join('');
@@ -73,16 +89,8 @@ btn.addEventListener('click', () => {
 		: (btn.textContent = 'close');
 });
 
-// const CATEGORIES = [
-// 	{ name: 'technology', color: '#3b82f6' },
-// 	{ name: 'science', color: '#16a34a' },
-// 	{ name: 'finance', color: '#ef4444' },
-// 	{ name: 'society', color: '#eab308' },
-// 	{ name: 'entertainment', color: '#db2777' },
-// 	{ name: 'health', color: '#14b8a6' },
-// 	{ name: 'history', color: '#f97316' },
-// 	{ name: 'news', color: '#8b5cf6' },
-// ];
+console.log([7, 64, 6, -23, 11].filter((el) => el > 10));
+console.log([7, 64, 6, -23, 11].find((el) => el > 10));
 
 // const allCategories = CATEGORIES.map((el) => el.name);
 
