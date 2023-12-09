@@ -4,6 +4,7 @@ import FactForm from './FactForm';
 import FactsList from './FactsList';
 
 import './style.css';
+import Header from './Header';
 
 const CATEGORIES = [
 	{ name: 'technology', color: '#3b82f6' },
@@ -51,27 +52,18 @@ const initialFacts = [
 ];
 
 function App() {
-	const appTitle = 'Today I Learned';
 	const [showForm, setShowForm] = useState(false);
+	const [facts, setFacts] = useState(initialFacts);
 
 	return (
 		<>
-			<header className="header">
-				<div className="logo">
-					<img src="logo.png" alt="Today I Learned Logo" />
-					<h1>{appTitle}</h1>
-				</div>
-				<button
-					className="btn btn-large btn-open"
-					onClick={() => setShowForm((show) => !show)}
-				>
-					{showForm ? 'close' : 'share a fact'}
-				</button>
-			</header>
-			{showForm ? <FactForm /> : null}
+			<Header showForm={showForm} setShowForm={setShowForm} />
+			{showForm ? (
+				<FactForm categories={CATEGORIES} setFacts={setFacts} setShowForm={setShowForm} />
+			) : null}
 			<main className="main">
 				<CategoryFilter categories={CATEGORIES} />
-				<FactsList facts={initialFacts} categories={CATEGORIES} />
+				<FactsList facts={facts} categories={CATEGORIES} />
 			</main>
 		</>
 	);
