@@ -1,20 +1,17 @@
-const CategoryFilter = () => {
+const CategoryFilter = ({ categories }) => {
 	return (
 		<aside>
 			<ul>
 				<li className="category">
 					<button className="btn btn-all-categories">All</button>
 				</li>
-				<li className="category">
-					<button className="btn btn-category" style={{ backgroundColor: '#3b82f6' }}>
-						Technology
-					</button>
-				</li>
-				<li className="category">
-					<button className="btn btn-category" style={{ backgroundColor: '#16a34a' }}>
-						Science
-					</button>
-				</li>
+				{categories.map((cat) => (
+					<li className="category" key={cat.name}>
+						<button className="btn btn-category" style={{ backgroundColor: cat.color }}>
+							{cat.name}
+						</button>
+					</li>
+				))}
 			</ul>
 		</aside>
 	);

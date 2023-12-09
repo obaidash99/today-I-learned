@@ -62,7 +62,7 @@ function App() {
 			</header>
 			<FactForm />
 			<main className="main">
-				<CategoryFilter />
+				<CategoryFilter categories={CATEGORIES} />
 				<FactsList facts={initialFacts} categories={CATEGORIES} />
 			</main>
 		</>
