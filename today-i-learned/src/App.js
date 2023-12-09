@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import CategoryFilter from './CategoryFilter';
 import FactForm from './FactForm';
 import FactsList from './FactsList';
@@ -51,6 +52,8 @@ const initialFacts = [
 
 function App() {
 	const appTitle = 'Today I Learned';
+	const [showForm, setShowForm] = useState(false);
+
 	return (
 		<>
 			<header className="header">
@@ -58,9 +61,14 @@ function App() {
 					<img src="logo.png" alt="Today I Learned Logo" />
 					<h1>{appTitle}</h1>
 				</div>
-				<button className="btn btn-large btn-open">Share a fact</button>
+				<button
+					className="btn btn-large btn-open"
+					onClick={() => setShowForm((show) => !show)}
+				>
+					{showForm ? 'close' : 'share a fact'}
+				</button>
 			</header>
-			<FactForm />
+			{showForm ? <FactForm /> : null}
 			<main className="main">
 				<CategoryFilter categories={CATEGORIES} />
 				<FactsList facts={initialFacts} categories={CATEGORIES} />
