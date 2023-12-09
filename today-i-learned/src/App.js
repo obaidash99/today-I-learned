@@ -57,21 +57,29 @@ function App() {
 	const [showForm, setShowForm] = useState(false);
 	const [facts, setFacts] = useState([]);
 	const [isLoading, setIsLoading] = useState(false);
+	const [currentCategory, setCurrentCategory] = useState('all');
 
-	useEffect(function () {
-		async function getFacts() {
-			setIsLoading(true);
-			const { data: facts, error } = await supabase
-				.from('facts')
-				.select('*')
-				.order('votesInteresting', { ascending: false });
+	useEffect(
+		function () {
+			async function getFacts() {
+				setIsLoading(true);
 
-			if (!error) setFacts(facts);
-			else alert('There was a problem getting the data!');
-			setIsLoading(false);
-		}
-		getFacts();
-	}, []);
+				let query = supabase.from('facts').select('*');
+
+				if (currentCategory !== 'all') query = query.eq('category', currentCategory);
+
+				const { data: facts, error } = await query.order('votesInteresting', {
+					ascending: false,
+				});
+
+				if (!error) setFacts(facts);
+				else alert('There was a problem getting the data!');
+				setIsLoading(false);
+			}
+			getFacts();
+		},
+		[currentCategory]
+	);
 
 	return (
 		<>
@@ -80,7 +88,7 @@ function App() {
 				<FactForm categories={CATEGORIES} setFacts={setFacts} setShowForm={setShowForm} />
 			) : null}
 			<main className="main">
-				<CategoryFilter categories={CATEGORIES} />
+				<CategoryFilter categories={CATEGORIES} setCurrentCategory={setCurrentCategory} />
 				{isLoading ? <Loader /> : <FactsList facts={facts} categories={CATEGORIES} />}
 			</main>
 		</>
