@@ -1,10 +1,12 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CategoryFilter from './CategoryFilter';
 import FactForm from './FactForm';
 import FactsList from './FactsList';
+import supabase from './supabase';
 
 import './style.css';
 import Header from './Header';
+import Loader from './Loader';
 
 const CATEGORIES = [
 	{ name: 'technology', color: '#3b82f6' },
@@ -53,7 +55,23 @@ const initialFacts = [
 
 function App() {
 	const [showForm, setShowForm] = useState(false);
-	const [facts, setFacts] = useState(initialFacts);
+	const [facts, setFacts] = useState([]);
+	const [isLoading, setIsLoading] = useState(false);
+
+	useEffect(function () {
+		async function getFacts() {
+			setIsLoading(true);
+			const { data: facts, error } = await supabase
+				.from('facts')
+				.select('*')
+				.order('votesInteresting', { ascending: false });
+
+			if (!error) setFacts(facts);
+			else alert('There was a problem getting the data!');
+			setIsLoading(false);
+		}
+		getFacts();
+	}, []);
 
 	return (
 		<>
@@ -63,7 +81,7 @@ function App() {
 			) : null}
 			<main className="main">
 				<CategoryFilter categories={CATEGORIES} />
-				<FactsList facts={facts} categories={CATEGORIES} />
+				{isLoading ? <Loader /> : <FactsList facts={facts} categories={CATEGORIES} />}
 			</main>
 		</>
 	);
