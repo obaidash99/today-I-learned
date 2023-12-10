@@ -1,6 +1,24 @@
-import React from 'react';
+import React, { useState } from 'react';
+import supabase from './supabase';
 
-const Fact = ({ fact, categories }) => {
+const Fact = ({ fact, setFacts, categories }) => {
+	const [isUpdating, setIsUpdating] = useState(false);
+
+	async function handleVote(columnName) {
+		setIsUpdating(true);
+		const { data: updatedFact, error } = await supabase
+			.from('facts')
+			.update({ [`${columnName}`]: fact[`${columnName}`] + 1 })
+			.eq('id', fact.id)
+			.select();
+		setIsUpdating(false);
+
+		if (!error)
+			setFacts((facts) =>
+				facts.map((element) => (element.id === fact.id ? updatedFact[0] : element))
+			);
+	}
+
 	return (
 		<li className="fact">
 			<p>
@@ -18,9 +36,15 @@ const Fact = ({ fact, categories }) => {
 				{fact.category}
 			</span>
 			<div className="vote-buttons">
-				<button>👍 {fact.votesInteresting} </button>
-				<button>🤯 {fact.votesMindblowing} </button>
-				<button>⛔️ {fact.votesFalse} </button>
+				<button onClick={() => handleVote('votesInteresting')} disabled={isUpdating}>
+					👍 {fact.votesInteresting}{' '}
+				</button>
+				<button onClick={() => handleVote('votesMindBlowing')} disabled={isUpdating}>
+					🤯 {fact.votesMindBlowing}{' '}
+				</button>
+				<button onClick={() => handleVote('votesFalse')} disabled={isUpdating}>
+					⛔️ {fact.votesFalse}{' '}
+				</button>
 			</div>
 		</li>
 	);

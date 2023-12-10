@@ -73,7 +73,7 @@ body {
 
 @media (max-width: 1000px) {
 	body {
-		padding: 32px 48px;
+		padding: 20px;
 	}
 
 	.fact-form {
@@ -156,6 +156,10 @@ h1 {
 	background-color: #292524;
 }
 
+.vote-buttons button:disabled {
+	background-color: #44403c;
+}
+
 .tag {
 	text-transform: uppercase;
 	font-size: 14px;
@@ -226,4 +230,30 @@ ul {
 	font-size: 32px;
 	font-weight: 600;
 	margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+	.main {
+		grid-template-columns: 1fr;
+		height: auto;
+	}
+}
+
+@media (max-width: 600px) {
+	#root {
+		padding: 24px;
+	}
+
+	.header {
+		flex-direction: column;
+		gap: 16px;
+	}
+
+	.fact-form {
+		padding: 16px;
+	}
+
+	.fact {
+		padding: 12px 16px;
+	}
 }

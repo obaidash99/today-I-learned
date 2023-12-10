@@ -32,7 +32,7 @@ const FactForm = ({ categories, setFacts, setShowForm }) => {
 
 			setIsUploading(false);
 
-			setFacts((facts) => [newFact[0], ...facts]);
+			if (!error) setFacts((facts) => [newFact[0], ...facts]);
 
 			setText('');
 			setSource('');
