@@ -3,6 +3,7 @@ import supabase from './supabase';
 
 const Fact = ({ fact, setFacts, categories }) => {
 	const [isUpdating, setIsUpdating] = useState(false);
+	const isDisputed = fact.votesInteresting + fact.votesMindBlowing < fact.votesFalse;
 
 	async function handleVote(columnName) {
 		setIsUpdating(true);
@@ -22,6 +23,7 @@ const Fact = ({ fact, setFacts, categories }) => {
 	return (
 		<li className="fact">
 			<p>
+				{isDisputed ? <span className="disputed">[⛔disputed⛔]</span> : null}
 				{fact.text}
 				<a href={fact.source} className="source" target="_blank" rel="noreferrer">
 					(Source)
